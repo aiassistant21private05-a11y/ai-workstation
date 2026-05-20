@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Workstation Cyber</title>
+<title>AI Floating Workstation</title>
 
 <style>
 body{
@@ -13,22 +13,21 @@ body{
   justify-content:center;
   align-items:center;
   font-family:system-ui;
-  background:#050816;
+  background: radial-gradient(circle at top,#0b1220,#050816);
   overflow:hidden;
 }
 
-/* NEON BACKGROUND */
+/* ambient glow */
 body::before{
   content:"";
   position:absolute;
   width:500px;
   height:500px;
-  background:#4f46e5;
+  background:#6366f1;
   filter:blur(140px);
   top:-120px;
   left:-120px;
-  opacity:0.5;
-  animation:float 6s ease-in-out infinite;
+  opacity:0.4;
 }
 
 body::after{
@@ -40,33 +39,23 @@ body::after{
   filter:blur(140px);
   bottom:-150px;
   right:-150px;
-  opacity:0.4;
-  animation:float 8s ease-in-out infinite;
+  opacity:0.35;
 }
 
-@keyframes float{
-  0%,100%{transform:translateY(0px)}
-  50%{transform:translateY(30px)}
-}
-
-/* MAIN CARD */
+/* MAIN APP */
 .app{
   width:380px;
   height:650px;
   background:rgba(255,255,255,0.06);
   backdrop-filter: blur(25px);
-  border:1px solid rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.12);
   border-radius:24px;
   display:flex;
   flex-direction:column;
   overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,0.7);
 
-  box-shadow:
-  0 0 20px rgba(99,102,241,0.4),
-  0 0 60px rgba(6,182,212,0.2),
-  0 30px 80px rgba(0,0,0,0.8);
-
-  transform: perspective(900px) rotateX(2deg);
+  transform: perspective(1000px) rotateX(4deg);
 }
 
 /* HEADER */
@@ -75,7 +64,6 @@ body::after{
   text-align:center;
   color:white;
   font-weight:600;
-  letter-spacing:1px;
   background:rgba(255,255,255,0.05);
   border-bottom:1px solid rgba(255,255,255,0.1);
 }
@@ -87,12 +75,25 @@ body::after{
   overflow-y:auto;
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:12px;
 }
 
-/* MESSAGE */
+/* MESSAGE WRAPPER */
 .msg{
   display:flex;
+  animation:floatIn 0.3s ease;
+}
+
+/* FLOAT ANIMATION */
+@keyframes floatIn{
+  from{
+    opacity:0;
+    transform:translateY(10px) scale(0.95);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
 }
 
 /* USER */
@@ -104,7 +105,10 @@ body::after{
   background:linear-gradient(135deg,#6366f1,#3b82f6);
   color:white;
   border-radius:18px 18px 4px 18px;
-  box-shadow:0 0 15px rgba(99,102,241,0.4);
+  box-shadow:0 10px 25px rgba(99,102,241,0.4);
+
+  transform: translateZ(0);
+  transition:0.2s;
 }
 
 /* AI */
@@ -117,17 +121,23 @@ body::after{
   color:white;
   border-radius:18px 18px 18px 4px;
   border:1px solid rgba(255,255,255,0.15);
-  box-shadow:0 0 15px rgba(6,182,212,0.15);
+  box-shadow:0 10px 25px rgba(6,182,212,0.15);
+
+  transform: translateZ(0);
+  transition:0.25s;
 }
 
-/* BUBBLE */
+/* 🔥 FLOAT EFFECT (INI YANG KAMU MAU) */
 .bubble{
   max-width:75%;
   padding:10px 12px;
   font-size:14px;
   line-height:1.4;
-  backdrop-filter: blur(10px);
-  transform: translateZ(0);
+}
+
+/* hover floating */
+.bubble:hover{
+  transform:translateY(-4px) scale(1.02);
 }
 
 /* TYPING */
@@ -165,7 +175,6 @@ button{
   color:white;
   cursor:pointer;
   font-weight:600;
-  box-shadow:0 0 15px rgba(6,182,212,0.3);
 }
 </style>
 
@@ -175,7 +184,7 @@ button{
 
 <div class="app">
 
-  <div class="header">⚡ AI WORKSTATION / CYBER CORE</div>
+  <div class="header">⚡ AI FLOATING CORE</div>
 
   <div id="chat" class="chat"></div>
 
@@ -207,16 +216,13 @@ function add(text,type){
 }
 
 function reply(t){
-  if(t.includes("halo")||t.includes("hi")){
-    return "⚡ Halo, saya AI Cyber Core siap membantu kamu.";
+  if(t.includes("halo")){
+    return "Halo 👋 dari AI Floating System";
   }
   if(t.includes("siapa")){
-    return "Saya AI futuristik generasi prototype 🚀";
+    return "Saya AI dengan UI floating 3D prototype ⚡";
   }
-  if(t.includes("harga")){
-    return "Saya bisa bantu analisis data harga ⚡";
-  }
-  return "Data belum lengkap ⚡ tapi saya terus belajar...";
+  return "Aku masih mode demo, tapi UI sudah hidup ✨";
 }
 
 function send(){
@@ -228,12 +234,12 @@ function send(){
   input.value="";
 
   const typing=document.getElementById("typing");
-  typing.innerText="AI processing...";
+  typing.innerText="AI floating thinking...";
 
   setTimeout(()=>{
     typing.innerText="";
     add(reply(text.toLowerCase()),"ai");
-  },900);
+  },700);
 }
 
 </script>
