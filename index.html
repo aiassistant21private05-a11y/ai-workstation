@@ -16,54 +16,120 @@ body{
   font-family:system-ui;
 }
 
+/* soft neon glow */
+.glow{
+  position:absolute;
+  width:260px;
+  height:260px;
+  background:#00e5ff;
+  filter:blur(90px);
+  opacity:0.15;
+  top:-80px;
+  left:-80px;
+}
+
 .app{
   width:360px;
-  height:600px;
+  height:620px;
   background:#0a0a0a;
+  border-radius:20px;
   display:flex;
   flex-direction:column;
-  border-radius:15px;
   overflow:hidden;
-  border:1px solid #00e5ff33;
+  border:1px solid rgba(0,229,255,0.2);
+  box-shadow:0 0 25px rgba(0,229,255,0.08);
 }
 
+/* HEADER */
 .header{
-  padding:12px;
+  padding:14px;
   text-align:center;
   color:#00e5ff;
-  background:#111;
+  background:#0f0f0f;
+  border-bottom:1px solid rgba(0,229,255,0.15);
+  font-weight:600;
+  letter-spacing:0.5px;
 }
 
+/* CHAT */
 .chat{
   flex:1;
-  padding:10px;
+  padding:12px;
   overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
-.msg{margin:8px 0;}
-.user{color:#00e5ff;text-align:right;}
-.ai{color:#00ff88;text-align:left;}
+/* MESSAGE */
+.msg{
+  display:flex;
+}
 
+.user{
+  justify-content:flex-end;
+}
+
+.ai{
+  justify-content:flex-start;
+}
+
+/* BUBBLE */
+.bubble{
+  max-width:75%;
+  padding:10px 12px;
+  font-size:14px;
+  border-radius:14px;
+  line-height:1.4;
+  animation:pop 0.2s ease;
+}
+
+/* user = neon blue solid style */
+.user .bubble{
+  background:rgba(0,229,255,0.08);
+  color:#00e5ff;
+  border:1px solid rgba(0,229,255,0.25);
+}
+
+/* ai = same style biar clean (no green lagi) */
+.ai .bubble{
+  background:rgba(0,229,255,0.05);
+  color:#bfefff;
+  border:1px solid rgba(0,229,255,0.15);
+}
+
+@keyframes pop{
+  from{transform:scale(0.95);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* INPUT */
 .input{
   display:flex;
   padding:10px;
-  background:#111;
+  gap:8px;
+  background:#0f0f0f;
+  border-top:1px solid rgba(0,229,255,0.12);
 }
 
 input{
   flex:1;
   padding:10px;
-  background:#000;
-  border:1px solid #00e5ff33;
-  color:#00e5ff;
+  border:none;
+  border-radius:12px;
   outline:none;
+  background:#000;
+  color:#00e5ff;
+  border:1px solid rgba(0,229,255,0.2);
 }
 
 button{
-  margin-left:8px;
-  padding:10px;
-  background:#00e5ff;
+  padding:10px 14px;
   border:none;
+  border-radius:12px;
+  background:#00e5ff;
+  color:#000;
+  font-weight:600;
   cursor:pointer;
 }
 </style>
@@ -72,9 +138,11 @@ button{
 
 <body>
 
+<div class="glow"></div>
+
 <div class="app">
 
-  <div class="header">NEON AI</div>
+  <div class="header">⚡ NEON AI WORKSTATION</div>
 
   <div id="chat" class="chat"></div>
 
@@ -87,14 +155,20 @@ button{
 
 <script>
 
-const chat = document.getElementById("chat");
-const input = document.getElementById("msg");
+const chat=document.getElementById("chat");
+const input=document.getElementById("msg");
 
 function add(text,type){
-  const div=document.createElement("div");
-  div.className="msg "+type;
-  div.innerText=text;
-  chat.appendChild(div);
+  const row=document.createElement("div");
+  row.className="msg "+type;
+
+  const bubble=document.createElement("div");
+  bubble.className="bubble";
+  bubble.innerText=text;
+
+  row.appendChild(bubble);
+  chat.appendChild(row);
+
   chat.scrollTop=chat.scrollHeight;
 }
 
@@ -102,7 +176,7 @@ function send(){
   const text=input.value.trim();
   if(!text) return;
 
-  add("Kamu: "+text,"user");
+  add(text,"user");
   input.value="";
 
   setTimeout(()=>{
