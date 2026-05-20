@@ -13,34 +13,20 @@ body{
   justify-content:center;
   align-items:center;
   font-family:system-ui;
-  background:#000000;
-  overflow:hidden;
+  background:#000;
 }
 
-/* NEON GLOW (LIGHT) */
-.glow1{
+/* glow */
+.glow1,.glow2{
   position:absolute;
-  width:250px;
-  height:250px;
-  background:#00e5ff;
-  filter:blur(70px);
-  opacity:0.25;
-  top:-60px;
-  left:-60px;
-}
-
-.glow2{
-  position:absolute;
-  width:250px;
-  height:250px;
-  background:#00ff88;
+  width:260px;
+  height:260px;
   filter:blur(80px);
-  opacity:0.2;
-  bottom:-80px;
-  right:-80px;
+  opacity:0.25;
 }
+.glow1{background:#00e5ff;top:-60px;left:-60px;}
+.glow2{background:#00ff88;bottom:-80px;right:-80px;}
 
-/* APP */
 .app{
   width:360px;
   height:620px;
@@ -52,17 +38,14 @@ body{
   border:1px solid rgba(0,255,255,0.15);
 }
 
-/* HEADER */
 .header{
   padding:14px;
   text-align:center;
   color:#00e5ff;
   background:#0f0f0f;
-  font-weight:600;
   border-bottom:1px solid rgba(0,255,255,0.15);
 }
 
-/* CHAT */
 .chat{
   flex:1;
   padding:10px;
@@ -72,20 +55,10 @@ body{
   gap:8px;
 }
 
-/* MSG */
-.msg{
-  display:flex;
-}
+.msg{display:flex;}
+.user{justify-content:flex-end;}
+.ai{justify-content:flex-start;}
 
-.user{
-  justify-content:flex-end;
-}
-
-.ai{
-  justify-content:flex-start;
-}
-
-/* BUBBLE */
 .bubble{
   max-width:75%;
   padding:9px 11px;
@@ -93,27 +66,23 @@ body{
   border-radius:12px;
 }
 
-/* USER NEON BLUE */
 .user .bubble{
   background:#001f2f;
   color:#00e5ff;
   border:1px solid rgba(0,229,255,0.3);
 }
 
-/* AI NEON GREEN */
 .ai .bubble{
   background:#001a10;
   color:#00ff88;
   border:1px solid rgba(0,255,136,0.25);
 }
 
-/* INPUT */
 .input{
   display:flex;
   padding:10px;
   background:#0f0f0f;
   gap:8px;
-  border-top:1px solid rgba(0,255,255,0.15);
 }
 
 input{
@@ -153,16 +122,18 @@ button{
 
   <div class="input">
     <input id="msg" placeholder="Tulis pesan...">
-    <button onclick="send()">Kirim</button>
+    <button id="sendBtn">Kirim</button>
   </div>
 
 </div>
 
 <script>
 
-function add(text,type){
-  const chat=document.getElementById("chat");
+const chat = document.getElementById("chat");
+const input = document.getElementById("msg");
+const btn = document.getElementById("sendBtn");
 
+function add(text,type){
   const row=document.createElement("div");
   row.className="msg "+type;
 
@@ -177,18 +148,13 @@ function add(text,type){
 }
 
 function reply(t){
-  if(t.includes("halo")){
-    return "⚡ Halo dari Neon AI System";
-  }
-  if(t.includes("siapa")){
-    return "Saya AI neon prototype 💡";
-  }
+  if(t.includes("halo")) return "⚡ Halo dari Neon AI System";
+  if(t.includes("siapa")) return "Saya AI neon prototype 💡";
   return "✔ pesan diterima, sistem aktif";
 }
 
 function send(){
-  const input=document.getElementById("msg");
-  const text=input.value;
+  const text = input.value.trim();
   if(!text) return;
 
   add(text,"user");
@@ -198,6 +164,14 @@ function send(){
     add(reply(text.toLowerCase()),"ai");
   },400);
 }
+
+/* FIX: event listener (lebih stabil dari onclick) */
+btn.addEventListener("click", send);
+
+/* bonus: tekan enter */
+input.addEventListener("keypress", function(e){
+  if(e.key === "Enter") send();
+});
 
 </script>
 
