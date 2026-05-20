@@ -14,8 +14,15 @@
     <div id="chat-box"></div>
 
     <div class="input-area">
-      <input type="text" id="user-input" placeholder="Tulis pesan...">
-      <button onclick="sendMessage()">Kirim</button>
+      <input id="msg" placeholder="Tulis pesan">
+<button onclick="sendMessage()">kirim</button>
+
+<script>
+function sendMessage() {
+  const msg = document.getElementById("msg").value;
+  alert("Kamu kirim: " + msg);
+}
+</script>
     </div>
   </div>
 
