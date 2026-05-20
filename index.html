@@ -1,22 +1,202 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>AI Workstation</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Workstation</title>
+
+<style>
+body{
+  margin:0;
+  font-family: system-ui, Arial;
+  background: linear-gradient(135deg,#0b1220,#111827);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+/* APP FRAME */
+.app{
+  width:360px;
+  height:640px;
+  background:#0f172a;
+  border-radius:20px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+}
+
+/* HEADER */
+.header{
+  background:#1f2937;
+  padding:14px;
+  color:white;
+  font-weight:600;
+  text-align:center;
+  letter-spacing:0.5px;
+}
+
+/* CHAT AREA */
+.chat{
+  flex:1;
+  padding:12px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* MESSAGE ROW */
+.msg{
+  display:flex;
+}
+
+/* USER */
+.user{
+  justify-content:flex-end;
+}
+
+.user .bubble{
+  background:#3b82f6;
+  color:white;
+  border-radius:14px 14px 0 14px;
+}
+
+/* AI */
+.ai{
+  justify-content:flex-start;
+}
+
+.ai .bubble{
+  background:#1f2937;
+  color:white;
+  border-radius:14px 14px 14px 0;
+}
+
+/* BUBBLE */
+.bubble{
+  max-width:75%;
+  padding:10px 12px;
+  font-size:14px;
+  line-height:1.4;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* TYPING */
+.typing{
+  font-size:12px;
+  color:#9ca3af;
+  padding:6px 12px;
+  height:20px;
+}
+
+/* INPUT */
+.input{
+  display:flex;
+  padding:10px;
+  background:#1f2937;
+  gap:8px;
+}
+
+input{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  outline:none;
+  background:#0b1220;
+  color:white;
+}
+
+button{
+  padding:10px 14px;
+  border:none;
+  border-radius:10px;
+  background:#3b82f6;
+  color:white;
+  cursor:pointer;
+}
+
+/* SCROLLBAR */
+.chat::-webkit-scrollbar{
+  width:4px;
+}
+.chat::-webkit-scrollbar-thumb{
+  background:#374151;
+  border-radius:10px;
+}
+</style>
+
 </head>
+
 <body>
 
-<h2>AI Workstation OK</h2>
+<div class="app">
 
-<input id="msg" placeholder="tulis...">
-<button onclick="send()">kirim</button>
+  <div class="header">AI Workstation</div>
 
-<p id="out"></p>
+  <div id="chat" class="chat"></div>
+
+  <div id="typing" class="typing"></div>
+
+  <div class="input">
+    <input id="msg" placeholder="Tulis pesan...">
+    <button onclick="send()">Kirim</button>
+  </div>
+
+</div>
 
 <script>
-function send(){
-  const msg=document.getElementById("msg").value;
-  document.getElementById("out").innerText="Kamu: "+msg;
+
+function addMessage(text,type){
+  const chat=document.getElementById("chat");
+
+  const row=document.createElement("div");
+  row.className="msg "+type;
+
+  const bubble=document.createElement("div");
+  bubble.className="bubble";
+  bubble.innerText=text;
+
+  row.appendChild(bubble);
+  chat.appendChild(row);
+
+  chat.scrollTop=chat.scrollHeight;
 }
+
+/* SIMPLE AI */
+function getReply(t){
+  if(t.includes("hi") || t.includes("halo")){
+    return "Halo 👋 Aku AI Workstation siap membantu kamu.";
+  }
+  if(t.includes("siapa")){
+    return "Aku AI sederhana yang sedang kamu kembangkan 🚀";
+  }
+  if(t.includes("harga")){
+    return "Aku bisa bantu cari info harga, jelaskan lebih detail ya 👍";
+  }
+  return "Menarik 👍 Aku masih belajar, coba tanya hal lain ya.";
+}
+
+function send(){
+  const input=document.getElementById("msg");
+  const text=input.value;
+  if(!text) return;
+
+  addMessage(text,"user");
+  input.value="";
+
+  const typing=document.getElementById("typing");
+  typing.innerText="AI sedang mengetik...";
+
+  setTimeout(()=>{
+    typing.innerText="";
+    addMessage(getReply(text.toLowerCase()),"ai");
+  },900);
+}
+
 </script>
 
 </body>
