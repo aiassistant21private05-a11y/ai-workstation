@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Floating Workstation</title>
+<title>AI Workstation</title>
 
 <style>
 body{
@@ -13,49 +13,31 @@ body{
   justify-content:center;
   align-items:center;
   font-family:system-ui;
-  background: radial-gradient(circle at top,#0b1220,#050816);
-  overflow:hidden;
+  background:#0b1220;
 }
 
-/* ambient glow */
-body::before{
-  content:"";
+/* SIMPLE GLOW */
+.bg{
   position:absolute;
-  width:500px;
-  height:500px;
-  background:#6366f1;
-  filter:blur(140px);
-  top:-120px;
-  left:-120px;
-  opacity:0.4;
+  width:300px;
+  height:300px;
+  background:#3b82f6;
+  filter:blur(80px);
+  opacity:0.2;
+  top:-80px;
+  left:-80px;
 }
 
-body::after{
-  content:"";
-  position:absolute;
-  width:500px;
-  height:500px;
-  background:#06b6d4;
-  filter:blur(140px);
-  bottom:-150px;
-  right:-150px;
-  opacity:0.35;
-}
-
-/* MAIN APP */
+/* APP */
 .app{
-  width:380px;
-  height:650px;
-  background:rgba(255,255,255,0.06);
-  backdrop-filter: blur(25px);
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:24px;
+  width:360px;
+  height:620px;
+  background:#111827;
+  border-radius:18px;
   display:flex;
   flex-direction:column;
   overflow:hidden;
-  box-shadow:0 30px 80px rgba(0,0,0,0.7);
-
-  transform: perspective(1000px) rotateX(4deg);
+  border:1px solid rgba(255,255,255,0.08);
 }
 
 /* HEADER */
@@ -63,118 +45,79 @@ body::after{
   padding:14px;
   text-align:center;
   color:white;
+  background:#1f2937;
   font-weight:600;
-  background:rgba(255,255,255,0.05);
-  border-bottom:1px solid rgba(255,255,255,0.1);
 }
 
 /* CHAT */
 .chat{
   flex:1;
-  padding:12px;
-  overflow-y:auto;
+  padding:10px;
+  overflow:auto;
   display:flex;
   flex-direction:column;
-  gap:12px;
+  gap:8px;
 }
 
-/* MESSAGE WRAPPER */
+/* MSG */
 .msg{
   display:flex;
-  animation:floatIn 0.3s ease;
 }
 
-/* FLOAT ANIMATION */
-@keyframes floatIn{
-  from{
-    opacity:0;
-    transform:translateY(10px) scale(0.95);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-}
-
-/* USER */
 .user{
   justify-content:flex-end;
 }
 
-.user .bubble{
-  background:linear-gradient(135deg,#6366f1,#3b82f6);
-  color:white;
-  border-radius:18px 18px 4px 18px;
-  box-shadow:0 10px 25px rgba(99,102,241,0.4);
-
-  transform: translateZ(0);
-  transition:0.2s;
-}
-
-/* AI */
 .ai{
   justify-content:flex-start;
 }
 
-.ai .bubble{
-  background:rgba(255,255,255,0.08);
-  color:white;
-  border-radius:18px 18px 18px 4px;
-  border:1px solid rgba(255,255,255,0.15);
-  box-shadow:0 10px 25px rgba(6,182,212,0.15);
-
-  transform: translateZ(0);
-  transition:0.25s;
-}
-
-/* 🔥 FLOAT EFFECT (INI YANG KAMU MAU) */
+/* BUBBLE */
 .bubble{
   max-width:75%;
-  padding:10px 12px;
+  padding:9px 11px;
   font-size:14px;
-  line-height:1.4;
+  border-radius:12px;
+  transition:0.15s;
 }
 
-/* hover floating */
-.bubble:hover{
-  transform:translateY(-4px) scale(1.02);
+/* USER */
+.user .bubble{
+  background:#3b82f6;
+  color:white;
 }
 
-/* TYPING */
-.typing{
-  font-size:12px;
-  color:#67e8f9;
-  padding:6px 12px;
-  height:18px;
+/* AI */
+.ai .bubble{
+  background:#1f2937;
+  color:white;
 }
 
 /* INPUT */
 .input{
   display:flex;
   padding:10px;
+  background:#1f2937;
   gap:8px;
-  background:rgba(255,255,255,0.05);
-  border-top:1px solid rgba(255,255,255,0.1);
 }
 
 input{
   flex:1;
   padding:10px;
   border:none;
-  border-radius:12px;
+  border-radius:10px;
   outline:none;
-  background:rgba(0,0,0,0.4);
+  background:#0b1220;
   color:white;
 }
 
 button{
   padding:10px 14px;
   border:none;
-  border-radius:12px;
-  background:linear-gradient(135deg,#06b6d4,#6366f1);
+  border-radius:10px;
+  background:#3b82f6;
   color:white;
   cursor:pointer;
-  font-weight:600;
 }
 </style>
 
@@ -182,13 +125,13 @@ button{
 
 <body>
 
+<div class="bg"></div>
+
 <div class="app">
 
-  <div class="header">⚡ AI FLOATING CORE</div>
+  <div class="header">AI Workstation</div>
 
   <div id="chat" class="chat"></div>
-
-  <div id="typing" class="typing"></div>
 
   <div class="input">
     <input id="msg" placeholder="Tulis pesan...">
@@ -217,12 +160,9 @@ function add(text,type){
 
 function reply(t){
   if(t.includes("halo")){
-    return "Halo 👋 dari AI Floating System";
+    return "Halo 👋 siap bantu kamu";
   }
-  if(t.includes("siapa")){
-    return "Saya AI dengan UI floating 3D prototype ⚡";
-  }
-  return "Aku masih mode demo, tapi UI sudah hidup ✨";
+  return "Oke 👍 aku menerima pesanmu";
 }
 
 function send(){
@@ -233,13 +173,9 @@ function send(){
   add(text,"user");
   input.value="";
 
-  const typing=document.getElementById("typing");
-  typing.innerText="AI floating thinking...";
-
   setTimeout(()=>{
-    typing.innerText="";
     add(reply(text.toLowerCase()),"ai");
-  },700);
+  },400);
 }
 
 </script>
