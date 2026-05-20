@@ -1,22 +1,18 @@
-function sendMessage() {
-  const input = document.getElementById("user-input");
-  const chatBox = document.getElementById("chat-box");
+async function send(){
+  const text=input.value.trim();
+  if(!text) return;
 
-  const userText = input.value;
-  if (!userText) return;
+  add(text,"user");
+  input.value="";
 
-  // tampilkan pesan user
-  chatBox.innerHTML += "<div><b>You:</b> " + userText + "</div>";
+  add("AI sedang berpikir...","ai");
 
-  input.value = "";
+  const response = await getAIResponse(text);
 
-  // respon AI sementara (dummy dulu)
-  setTimeout(() => {
-    let reply = "Aku masih versi awal 😄 nanti kita upgrade ke AI real.";
+  // hapus "AI sedang berpikir..."
+  chat.lastChild.remove();
 
-    chatBox.innerHTML += "<div><b>AI:</b> " + reply + "</div>";
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }, 600);
+  add(response,"ai");
 }
 async function getAIResponse(text){
   const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
