@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Workstation</title>
+<title>AI Workstation Neon</title>
 
 <style>
 body{
@@ -13,40 +13,53 @@ body{
   justify-content:center;
   align-items:center;
   font-family:system-ui;
-  background:#0b1220;
+  background:#000000;
+  overflow:hidden;
 }
 
-/* SIMPLE GLOW */
-.bg{
+/* NEON GLOW (LIGHT) */
+.glow1{
   position:absolute;
-  width:300px;
-  height:300px;
-  background:#3b82f6;
+  width:250px;
+  height:250px;
+  background:#00e5ff;
+  filter:blur(70px);
+  opacity:0.25;
+  top:-60px;
+  left:-60px;
+}
+
+.glow2{
+  position:absolute;
+  width:250px;
+  height:250px;
+  background:#00ff88;
   filter:blur(80px);
   opacity:0.2;
-  top:-80px;
-  left:-80px;
+  bottom:-80px;
+  right:-80px;
 }
 
 /* APP */
 .app{
   width:360px;
   height:620px;
-  background:#111827;
+  background:#0a0a0a;
   border-radius:18px;
   display:flex;
   flex-direction:column;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,0.08);
+  border:1px solid rgba(0,255,255,0.15);
 }
 
 /* HEADER */
 .header{
   padding:14px;
   text-align:center;
-  color:white;
-  background:#1f2937;
+  color:#00e5ff;
+  background:#0f0f0f;
   font-weight:600;
+  border-bottom:1px solid rgba(0,255,255,0.15);
 }
 
 /* CHAT */
@@ -78,27 +91,29 @@ body{
   padding:9px 11px;
   font-size:14px;
   border-radius:12px;
-  transition:0.15s;
 }
 
-/* USER */
+/* USER NEON BLUE */
 .user .bubble{
-  background:#3b82f6;
-  color:white;
+  background:#001f2f;
+  color:#00e5ff;
+  border:1px solid rgba(0,229,255,0.3);
 }
 
-/* AI */
+/* AI NEON GREEN */
 .ai .bubble{
-  background:#1f2937;
-  color:white;
+  background:#001a10;
+  color:#00ff88;
+  border:1px solid rgba(0,255,136,0.25);
 }
 
 /* INPUT */
 .input{
   display:flex;
   padding:10px;
-  background:#1f2937;
+  background:#0f0f0f;
   gap:8px;
+  border-top:1px solid rgba(0,255,255,0.15);
 }
 
 input{
@@ -107,16 +122,18 @@ input{
   border:none;
   border-radius:10px;
   outline:none;
-  background:#0b1220;
-  color:white;
+  background:#000;
+  color:#00e5ff;
+  border:1px solid rgba(0,229,255,0.2);
 }
 
 button{
   padding:10px 14px;
   border:none;
   border-radius:10px;
-  background:#3b82f6;
-  color:white;
+  background:linear-gradient(135deg,#00e5ff,#00ff88);
+  color:#000;
+  font-weight:600;
   cursor:pointer;
 }
 </style>
@@ -125,11 +142,12 @@ button{
 
 <body>
 
-<div class="bg"></div>
+<div class="glow1"></div>
+<div class="glow2"></div>
 
 <div class="app">
 
-  <div class="header">AI Workstation</div>
+  <div class="header">⚡ NEON AI WORKSTATION</div>
 
   <div id="chat" class="chat"></div>
 
@@ -160,9 +178,12 @@ function add(text,type){
 
 function reply(t){
   if(t.includes("halo")){
-    return "Halo 👋 siap bantu kamu";
+    return "⚡ Halo dari Neon AI System";
   }
-  return "Oke 👍 aku menerima pesanmu";
+  if(t.includes("siapa")){
+    return "Saya AI neon prototype 💡";
+  }
+  return "✔ pesan diterima, sistem aktif";
 }
 
 function send(){
