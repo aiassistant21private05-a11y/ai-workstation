@@ -18,3 +18,22 @@ function sendMessage() {
     chatBox.scrollTop = chatBox.scrollHeight;
   }, 600);
 }
+async function getAIResponse(text){
+  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer YOUR_API_KEY"
+    },
+    body: JSON.stringify({
+      model: "llama3-8b-8192",
+      messages: [
+        { role: "system", content: "Kamu adalah AI assistant sederhana, jawab singkat dan jelas." },
+        { role: "user", content: text }
+      ]
+    })
+  });
+
+  const data = await res.json();
+  return data.choices[0].message.content;
+}
