@@ -1,7 +1,34 @@
-export default async function handler(req, res) {
-  console.log("API HIT OK");
+async function send(){
+  const text = input.value.trim();
+  if(!text) return;
 
-  return res.status(200).json({
-    reply: "Backend sudah jalan tapi belum connect ke AI"
-  });
+  add(text,"user");
+  input.value="";
+
+  showTyping();
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: text })
+    });
+
+    const data = await res.json();
+
+    console.log("DEBUG RESPONSE:", data); // penting buat cek
+
+    removeTyping();
+
+    add(
+      data.reply || data.message || "AI tidak merespon",
+      "ai"
+    );
+
+  } catch (err) {
+    removeTyping();
+    add("Error koneksi ke server","ai");
+  }
 }
