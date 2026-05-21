@@ -26,6 +26,8 @@ function showTyping(){
 
   div.appendChild(bubble);
   chat.appendChild(div);
+
+  chat.scrollTop = chat.scrollHeight;
 }
 
 function removeTyping(){
@@ -33,9 +35,14 @@ function removeTyping(){
   if(el) el.remove();
 }
 
-async function send(){
+// GLOBAL FUNCTION (INI PENTING BIAR onclick="send()" WORK)
+window.send = async function(){
+
   const text = input.value.trim();
-  if(!text) return;
+  if(!text){
+    alert("Tulis pesan dulu");
+    return;
+  }
 
   add(text, "user");
   input.value = "";
@@ -53,18 +60,20 @@ async function send(){
 
     const data = await res.json();
 
-    removeTyping();
-
     console.log("API RESPONSE:", data);
 
-    add(
-      data.reply || "Tidak ada response dari AI",
-      "ai"
-    );
+    removeTyping();
+
+    const reply =
+      data.reply ||
+      data.message ||
+      "AI tidak merespon";
+
+    add(reply, "ai");
 
   } catch (err) {
     removeTyping();
     add("Error koneksi ke server", "ai");
     console.log(err);
   }
-}
+};
